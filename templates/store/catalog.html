@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block title %}Product Catalog – Vantura{% endblock %}
+
+{% block content %}
+<div class="relative pt-32 pb-24 overflow-hidden bg-[var(--bg)]">
+    <!-- Background Blobs -->
+    <div class="blob blob-mint w-[600px] h-[600px] -top-40 -left-40 opacity-10" style="filter: blur(60px);"></div>
+    <div class="blob blob-stone w-[500px] h-[500px] bottom-0 -right-20 opacity-10" style="filter: blur(60px);"></div>
+
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <!-- Header -->
+        <div class="mb-16 animate-on-scroll">
+            <div class="section-tag mb-4">🛍️ Collection</div>
+            <h1 class="font-display text-5xl lg:text-7xl text-[var(--h)] tracking-tight">
+                {% if current_category %}{{ current_category.name }}{% else %}The <span class="italic font-light text-[var(--brand)]">Collection</span>{% endif %}
+            </h1>
+            {% if search_query %}
+            <p class="text-[var(--p)] mt-4 opacity-60">Seek and you shall find: <span class="font-bold text-[var(--h)]">"{{ search_query }}"</span> — {{ total_count }} objects discovered</p>
+            {% else %}
+            <p class="text-[var(--p)] mt-4 opacity-60">A selected range of {{ total_count }} extraordinary objects.</p>
+            {% endif %}
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-16">
+            <!-- Sidebar Filters -->
+            <aside class="w-full lg:w-72 flex-shrink-0">
+                <div class="glass-card p-8 sticky top-32 rounded-3xl bg-[var(--glass)] backdrop-blur-xl border border-[var(--glass-border)] shadow-2xl">
+                    <h3 class="font-display font-bold text-xl mb-8 flex items-center justify-between">
+                        Filters
+                        <span class="text-[10px] uppercase tracking-widest font-bold opacity-30">Refine</span>
+                    </h3>
+
+                    <form method="get" action="{% url 'catalog' %}" id="filter-form" class="space-y-10">
+                        <!-- Search -->
+                        <div class="input-group">
+                            <label class="text-[10px] uppercase tracking-widest font-bold text-[var(--muted)] mb-3 block">Search</label>
+                            <div class="relative">
+                                <input type="text" name="q" value="{{ search_query }}" 
+                                       class="w-full bg-[var(--bg)] border border-[var(--divider)] py-3 px-4 rounded-xl text-sm focus:border-[var(--brand)] outline-none transition-all" 
+                                       placeholder="Find an object...">
+                                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted)]">🔍</button>
+                            </div>
+                        </div>
+
+                        <!-- Categories -->
+                        <div>
+                            <label class="text-[10px] uppercase tracking-widest font-bold text-[var(--muted)] mb-4 block">Department</label>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="radio" name="category" value="" {% if not current_category %}checked{% endif %} class="accent-[var(--h)]" onchange="this.form.submit()">
+                                    <span class="text-sm font-medium text-[var(--muted)] group-hover:text-[var(--h)] transition-colors">All Products</span>
+                                </label>
+                                {% for cat in categories %}
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="radio" name="category" value="{{ cat.slug }}"
+                                           {% if current_category.slug == cat.slug %}checked{% endif %}
+                                           class="accent-[var(--h)]" onchange="this.form.submit()">
+                                    <span class="text-sm font-medium text-[var(--muted)] group-hover:text-[var(--h)] transition-colors">{{ cat.name }}</span>
+                                    <span class="ml-auto text-[10px] font-bold opacity-20">{{ cat.products.count }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div>
+                            <label class="text-[10px] uppercase tracking-widest font-bold text-[var(--muted)] mb-4 block">Price Range</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="number" name="min_price" placeholder="Min" class="w-full bg-[var(--bg)] border border-[var(--divider)] py-2 px-3 rounded-lg text-xs outline-none focus:border-[var(--brand)]">
+                                <input type="number" name="max_price" placeholder="Max" class="w-full bg-[var(--bg)] border border-[var(--divider)] py-2 px-3 rounded-lg text-xs outline-none focus:border-[var(--brand)]">
+                            </div>
+                        </div>
+
+                        <!-- Sort -->
+                        <div>
+                            <label class="text-[10px] uppercase tracking-widest font-bold text-[var(--muted)] mb-4 block">Sort By</label>
+                            <select name="sort" class="w-full bg-[var(--bg)] border border-[var(--divider)] py-3 px-4 rounded-xl text-sm focus:border-[var(--brand)] outline-none cursor-pointer" onchange="this.form.submit()">
+                                <option value="-created_at" {% if sort_by == '-created_at' %}selected{% endif %}>Newest Arrivals</option>
+                                <option value="price" {% if sort_by == 'price' %}selected{% endif %}>Price: Low to High</option>
+                                <option value="-price" {% if sort_by == '-price' %}selected{% endif %}>Price: High to Low</option>
+                                <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Alphabetical (A–Z)</option>
+                            </select>
+                        </div>
+
+                        <div class="pt-4 space-y-3">
+                            <button type="submit" class="w-full bg-[var(--h)] text-[var(--bg)] py-4 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-lg">Apply Filters</button>
+                            <a href="{% url 'catalog' %}" class="w-full border border-[var(--divider)] text-[var(--muted)] py-4 rounded-xl font-bold text-sm hover:bg-[var(--card-hover)] transition-all flex items-center justify-center">Clear Filters</a>
+                        </div>
+                    </form>
+                </div>
+            </aside>
+
+            <!-- Products Grid -->
+            <div class="flex-1 min-w-0">
+                {% if products %}
+                <div class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8">
+                    {% for product in products %}
+                    <div class="product-card animate-on-scroll" data-delay="{{ forloop.counter0 }}50">
+                        <div class="img-wrap relative aspect-square overflow-hidden bg-[var(--card-hover)]">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                            {% else %}
+                            <img src="/media/prod_{{ product.slug }}.png" alt="{{ product.name }}" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            
+                            {% if product.slug == 'sonic-the-hedgehog-speed-ring-keychain' %}
+                            <!-- Special CSS Fallback for Sonic Ring -->
+                            <div class="w-full h-full items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 hidden">
+                                <div class="relative w-24 h-24 rounded-full border-[8px] border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.5)] flex items-center justify-center animate-pulse">
+                                    <div class="absolute inset-0 rounded-full border-[1px] border-white/30"></div>
+                                    <span class="text-white font-display text-xs italic tracking-tighter opacity-80">SPEED</span>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="w-full h-full premium-placeholder hidden"></div>
+                            {% endif %}
+                            {% endif %}
+                            
+                            <!-- Floating Badge -->
+                            <div class="absolute top-4 left-4 flex flex-col gap-2 z-20">
+                                {% if product.is_new %}<span class="badge badge-new text-[10px]">Fresh Arrival</span>{% endif %}
+                                {% if product.discount_percentage %}<span class="badge badge-sale text-[10px]">{{ product.discount_percentage }}% Off</span>{% endif %}
+                                {% if not product.in_stock %}<span class="badge badge-out text-[10px]">Archived</span>{% endif %}
+                            </div>
+
+                            {% if product.in_stock %}
+                            <div class="absolute bottom-4 right-4 z-20 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                                <button data-add-to-cart="{{ product.id }}" 
+                                        class="w-12 h-12 rounded-full bg-[var(--h)] text-[var(--bg)] flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="p-6">
+                            {% if product.category %}<div class="text-[10px] uppercase tracking-widest font-bold text-[var(--brand)] mb-3">{{ product.category.name }}</div>{% endif %}
+                            <a href="{% url 'product_detail' product.slug %}" class="font-display font-medium text-xl lg:text-2xl text-[var(--h)] hover:text-[var(--brand)] transition-colors line-clamp-2 leading-tight mb-4">{{ product.name }}</a>
+                            
+                            <div class="flex items-center justify-between mt-auto">
+                                <div class="flex flex-col">
+                                    <span class="font-display font-bold text-2xl text-[var(--h)]">${{ product.price }}</span>
+                                    {% if product.compare_price %}<span class="text-[var(--muted)] text-sm line-through opacity-40">${{ product.compare_price }}</span>{% endif %}
+                                </div>
+                                <div class="flex items-center gap-1 text-[var(--brand)] text-xs">
+                                    {% with r=product.average_rating %}{% for i in "12345" %}{% if forloop.counter <= r %}★{% else %}<span class="opacity-20">☆</span>{% endif %}{% endfor %}{% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if products.has_other_pages %}
+                <div class="flex justify-center items-center gap-6 mt-24">
+                    {% if products.has_previous %}
+                    <a href="?page={{ products.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if current_category %}&category={{ current_category.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}" 
+                       class="w-12 h-12 rounded-full border border-[var(--divider)] flex items-center justify-center text-[var(--h)] hover:bg-[var(--brand)] hover:border-[var(--brand)] transition-all">←</a>
+                    {% endif %}
+                    
+                    <div class="flex gap-2">
+                        {% for num in products.paginator.page_range %}
+                        {% if products.number == num %}
+                        <span class="w-10 h-10 rounded-full bg-[var(--h)] text-[var(--bg)] flex items-center justify-center font-bold text-sm shadow-lg">{{ num }}</span>
+                        {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                        <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if current_category %}&category={{ current_category.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}" class="w-10 h-10 rounded-full border border-[var(--divider)] flex items-center justify-center text-sm font-medium hover:border-[var(--h)] transition-all">{{ num }}</a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    {% if products.has_next %}
+                    <a href="?page={{ products.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if current_category %}&category={{ current_category.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}" 
+                       class="w-12 h-12 rounded-full border border-[var(--divider)] flex items-center justify-center text-[var(--h)] hover:bg-[var(--brand)] hover:border-[var(--brand)] transition-all">→</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% else %}
+                <!-- Empty state -->
+                <div class="flex flex-col items-center justify-center py-32 text-center animate-on-scroll">
+                    <div class="text-9xl opacity-10 mb-8">🔭</div>
+                    <h3 class="font-display font-bold text-3xl mb-4">The collection is quiet.</h3>
+                    <p class="text-[var(--p)] text-lg opacity-60 mb-10 max-w-sm">No objects match your current filters. Try searching for something else.</p>
+                    <a href="{% url 'catalog' %}" class="bg-[var(--h)] text-[var(--bg)] px-10 py-5 rounded-xl font-bold hover:opacity-90 transition-all shadow-xl">Reset Filters</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Order Confirmed – Vantura{% endblock %}
+{% block content %}
+<div class="relative min-h-screen flex items-center justify-center bg-[var(--bg)] overflow-hidden px-4 py-24">
+    <!-- Background Blobs -->
+    <div class="blob blob-mint w-[600px] h-[600px] -top-20 -left-20"></div>
+    <div class="blob blob-stone w-[500px] h-[500px] -bottom-20 -right-20 opacity-30"></div>
+
+    <div class="relative w-full max-w-2xl z-10 animate-on-scroll">
+        <div class="glass-card p-12 rounded-[2.5rem] bg-white/40 backdrop-blur-md border border-white/40 shadow-2xl text-center">
+            <div class="w-24 h-24 rounded-full border-2 border-[var(--brand)] flex items-center justify-center text-4xl mx-auto mb-8 bg-[var(--bg)] shadow-xl">✨</div>
+            
+            <h1 class="font-display text-4xl lg:text-6xl text-[var(--h)] mb-4">Order <span class="italic font-light text-[var(--brand)]">Confirmed</span></h1>
+            <p class="text-[var(--muted)] text-lg mb-2 opacity-60">Thank you for shopping with us.</p>
+            <div class="font-mono text-[var(--brand)] text-xs font-bold uppercase tracking-[0.3em] mb-10">Order #{{ order.order_number }}</div>
+
+            <div class="glass p-8 rounded-3xl mb-10 text-left space-y-4 border border-[var(--divider)]">
+                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-widest">
+                    <span class="text-[var(--muted)] opacity-60">Name</span>
+                    <span class="text-[var(--h)]">{{ order.full_name }}</span>
+                </div>
+                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-widest">
+                    <span class="text-[var(--muted)] opacity-60">Email</span>
+                    <span class="text-[var(--h)]">{{ order.email }}</span>
+                </div>
+                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-widest">
+                    <span class="text-[var(--muted)] opacity-60">Method</span>
+                    <span class="text-[var(--h)]">{{ order.get_payment_method_display }}</span>
+                </div>
+                <div class="h-px bg-[var(--divider)] my-2"></div>
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)] opacity-60">Total Paid</span>
+                    <span class="font-display font-bold text-3xl text-[var(--h)]">${{ order.total }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)] opacity-60">Status</span>
+                    <span class="px-3 py-1 rounded-full bg-[var(--brand)]/10 text-[var(--h)] text-[10px] font-bold uppercase tracking-widest">{{ order.get_status_display }}</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'catalog' %}" class="bg-[var(--h)] text-[var(--bg)] px-10 py-5 rounded-xl font-bold hover:opacity-90 transition-all shadow-xl text-sm uppercase tracking-widest">Continue Shopping</a>
+                <a href="{% url 'profile' %}" class="border border-[var(--divider)] text-[var(--muted)] px-10 py-5 rounded-xl font-bold hover:bg-[var(--card-hover)] transition-all text-sm uppercase tracking-widest">View Profile</a>
+            </div>
+
+            <p class="mt-12 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--muted)] opacity-40">
+                A confirmation email has been sent to your address.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load store_tags %}
+{% block title %}Our Story – Vantura{% endblock %}
+
+{% block content %}
+<section class="relative pt-32 pb-24 overflow-hidden bg-[var(--bg)]">
+    <!-- Background Blobs -->
+    <div class="blob blob-mint w-[600px] h-[600px] -top-20 -left-20"></div>
+    <div class="blob blob-stone w-[500px] h-[500px] bottom-0 -right-20 opacity-30"></div>
+
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <!-- Editorial Header -->
+        <div class="max-w-3xl mb-24 animate-on-scroll">
+            <div class="section-tag mb-6 inline-flex">🌿 The Manifesto</div>
+            <h1 class="font-display text-6xl lg:text-8xl leading-[1.1] mb-12 text-[var(--h)] tracking-tight">
+                Objects with <span class="italic font-light text-[var(--brand)]">Soul</span>, designed for living.
+            </h1>
+            <p class="text-[var(--p)] text-xl lg:text-2xl leading-relaxed opacity-80 border-l-2 border-[var(--brand)]/30 pl-8">
+                Vantura is not just a store. It is an exploration of quality, a pursuit of the extraordinary in the everyday. We believe that the items you surround yourself with shape your rhythm.
+            </p>
+        </div>
+
+        <!-- Mission & Image Grid -->
+        <div class="grid lg:grid-cols-2 gap-24 items-center mb-32">
+            <div class="animate-on-scroll">
+                <h2 class="font-display text-4xl font-medium mb-8">Our <span class="italic">Selection</span> Process</h2>
+                <div class="space-y-8 text-[var(--p)] text-lg leading-relaxed opacity-70">
+                    <p>Founded on the principle that premium lifestyle should be accessible, Vantura bridges the gap between artisan quality and modern convenience. Every object in our collection is hand-picked, personally tested, and deeply considered.</p>
+                    <p>We look beyond the surface, seeking makers who honor their craft and materials that stand the test of time. From the serum that starts your morning to the tools that build your dreams—everything here has a purpose.</p>
+                </div>
+                <div class="mt-16 animate-on-scroll" style="animation-delay: 400ms;">
+                    <div class="text-[var(--p)] italic opacity-60 mb-2">Warmly,</div>
+                    <div class="font-display text-4xl text-[var(--brand)] italic font-light tracking-wide">Julian Vantura</div>
+                    <div class="text-[10px] uppercase tracking-[0.3em] font-bold text-[var(--muted)] mt-1">Founder & Lead Curator</div>
+                </div>
+            </div>
+            
+            <div class="relative animate-on-scroll" style="animation-delay: 200ms;">
+                <div class="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl relative z-10 scale-95 hover:scale-100 transition-transform duration-700">
+                    <img src="/media/vantura_hero_mint_boutique_1776794839372.png" alt="Our Process" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -inset-4 border border-[var(--brand)]/20 rounded-3xl rotate-3 z-0"></div>
+            </div>
+        </div>
+
+        <!-- Values -->
+        <div class="grid md:grid-cols-3 gap-12 mb-32">
+            {% for v in "Quality,Intent,Community"|split:"," %}
+            <div class="glass-card p-10 rounded-[2.5rem] animate-on-scroll" style="animation-delay: {{ forloop.counter0 }}00ms;">
+                <div class="w-16 h-16 rounded-2xl bg-[var(--brand)]/10 flex items-center justify-center text-3xl mb-8">
+                    {% if forloop.counter == 1 %}💎{% elif forloop.counter == 2 %}✨{% else %}🤝{% endif %}
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-4">{{ v }}</h3>
+                <p class="text-[var(--p)] opacity-60 leading-relaxed">
+                    {% if forloop.counter == 1 %}Every object passes a rigorous multi-point inspection. If it isn't exceptional, it doesn't make the cut.{% elif forloop.counter == 2 %}We don't believe in clutter. We believe in intentional objects that bring genuine value to your space.{% else %}Vantura is a dialogue. We listen to our community of customers to evolve our collection constantly.{% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- CTA -->
+        <div class="relative rounded-[3rem] overflow-hidden p-20 text-center bg-[var(--card-hover)] animate-on-scroll">
+            <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');"></div>
+            <div class="relative z-10">
+                <h2 class="font-display text-4xl lg:text-6xl mb-10 leading-tight">Ready to start <br><span class="italic font-light text-[var(--brand)]">Shopping?</span></h2>
+                <a href="{% url 'catalog' %}" class="btn-primary text-lg px-12 py-5">Shop the Collection</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

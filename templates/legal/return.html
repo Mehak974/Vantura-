@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Return & Exchange Policy – Vantura{% endblock %}
+{% block content %}
+<div class="pt-28 pb-20 px-4 min-h-screen">
+    <div class="max-w-3xl mx-auto">
+        <h1 class="font-display font-black text-4xl text-[var(--h)] mb-2">Return & Exchange Policy</h1>
+        <p class="text-[var(--muted)] text-sm mb-10">Last updated: January 1, 2025</p>
+        <div class="glass-card p-8 space-y-6 text-[var(--p)] leading-relaxed">
+            <div class="grid sm:grid-cols-3 gap-4 mb-4">
+                <div class="glass rounded-2xl p-5 text-center"><div class="text-3xl mb-2">📅</div><div class="font-display font-bold text-[var(--h)]">30 Days</div><div class="text-[var(--muted)] text-sm">Return window</div></div>
+                <div class="glass rounded-2xl p-5 text-center"><div class="text-3xl mb-2">🔄</div><div class="font-display font-bold text-[var(--h)]">Free</div><div class="text-[var(--muted)] text-sm">Exchanges</div></div>
+                <div class="glass rounded-2xl p-5 text-center"><div class="text-3xl mb-2">💰</div><div class="font-display font-bold text-[var(--h)]">Full Refund</div><div class="text-[var(--muted)] text-sm">On eligible returns</div></div>
+            </div>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">Return Eligibility</h2><p>Items may be returned within 30 days of delivery if they are unused, in original packaging, and in the same condition as received. Proof of purchase is required.</p></section>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">Non-Returnable Items</h2><p>The following items cannot be returned: opened consumables, personal care items after use, downloadable software, and items marked as final sale.</p></section>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">How to Return</h2>
+                <ol class="list-decimal list-inside space-y-2 text-[var(--p)]">
+                    <li>Contact us at returns@vantura.com within 30 days</li>
+                    <li>Provide your order number and reason for return</li>
+                    <li>We'll send a prepaid return label (eligible orders)</li>
+                    <li>Pack items securely and ship back</li>
+                    <li>Refund processed within 5–7 business days of receipt</li>
+                </ol>
+            </section>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">Exchanges</h2><p>Need a different size or variant? Contact us and we'll arrange a free exchange, subject to availability.</p></section>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">Contact Returns Team</h2><p>Email: <a href="mailto:returns@vantura.com" class="text-[var(--brand)] hover:underline">returns@vantura.com</a></p></section>
+        </div>
+    </div>
+</div>
+{% endblock %}

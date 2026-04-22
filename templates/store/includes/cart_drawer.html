@@ -1,0 +1,57 @@
+<div class="flex flex-col h-full">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-6 border-b border-[var(--divider)]">
+        <h2 class="font-display text-2xl font-bold">Your Bag <span class="text-sm font-normal text-[var(--muted)] ml-2">({{ cart.total_items }} items)</span></h2>
+        <button onclick="toggleCartDrawer()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[var(--card-hover)] transition-colors">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+    </div>
+
+    <!-- Items -->
+    <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+        {% if items %}
+            {% for item in items %}
+            <div class="flex gap-4 group">
+                <div class="w-20 h-20 rounded-xl overflow-hidden bg-[var(--card-hover)] flex-shrink-0">
+                    <img src="{{ item.product.get_image_url }}" alt="{{ item.product.name }}" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                         class="w-full h-full object-cover">
+                    <div class="w-full h-full premium-placeholder hidden"></div>
+                </div>
+                <div class="flex-1 flex flex-col justify-center">
+                    <h3 class="font-display font-medium text-sm text-[var(--h)] line-clamp-1 mb-1">{{ item.product.name }}</h3>
+                    <div class="flex items-center justify-between mt-1">
+                        <span class="text-xs text-[var(--muted)]">{{ item.quantity }} × ${{ item.product.price }}</span>
+                        <span class="text-sm font-bold">${{ item.subtotal }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="h-full flex flex-col items-center justify-center text-center opacity-40 py-20">
+                <div class="text-6xl mb-4">🛍️</div>
+                <p class="text-sm">Your bag is empty.</p>
+                <a href="{% url 'catalog' %}" class="mt-4 text-[var(--brand)] text-xs uppercase tracking-widest font-bold hover:underline">Start Shopping</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    {% if items %}
+    <div class="p-6 border-t border-[var(--divider)] bg-[var(--bg)]">
+        <div class="flex items-center justify-between mb-6">
+            <span class="text-[var(--muted)]">Subtotal</span>
+            <span class="text-xl font-bold font-display">${{ cart.total_price }}</span>
+        </div>
+        <div class="space-y-3">
+            <a href="{% url 'checkout' %}" class="block w-full bg-[var(--h)] text-[var(--bg)] text-center py-4 rounded-xl font-bold hover:opacity-90 transition-all shadow-xl">
+                Checkout
+            </a>
+            <a href="{% url 'cart' %}" class="block w-full text-center py-3 text-sm text-[var(--muted)] hover:text-[var(--h)] transition-colors">
+                View Full Bag
+            </a>
+        </div>
+        <p class="text-[10px] text-center text-[var(--muted)] mt-4 uppercase tracking-widest">Free Shipping on all orders</p>
+    </div>
+    {% endif %}
+</div>

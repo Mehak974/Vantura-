@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Login – Vantura{% endblock %}
+{% block content %}
+<div class="relative min-h-screen flex items-center justify-center bg-[var(--bg)] overflow-hidden px-4">
+    <!-- Background Blobs -->
+    <div class="blob blob-mint w-[600px] h-[600px] -top-20 -left-20"></div>
+    <div class="blob blob-stone w-[500px] h-[500px] -bottom-20 -right-20 opacity-30"></div>
+
+    <div class="relative w-full max-w-md z-10">
+        <!-- Logo -->
+        <div class="text-center mb-12">
+            <a href="{% url 'home' %}" class="inline-flex items-center gap-4 group">
+                <div class="w-14 h-14 rounded-full border-2 border-[var(--brand)] flex items-center justify-center font-display font-black text-[var(--brand)] text-2xl group-hover:bg-[var(--brand)] group-hover:text-[#1d231f] transition-all">V</div>
+                <span class="font-display font-bold text-3xl tracking-tight text-[var(--h)]">Vantura</span>
+            </a>
+        </div>
+
+        <div class="glass-card p-10 rounded-[2.5rem] bg-[var(--glass)] backdrop-blur-xl border border-[var(--glass-border)] shadow-2xl">
+            <h2 class="font-display text-4xl text-center mb-4 text-[var(--h)]">Welcome <span class="italic font-light text-[var(--brand)]">Back</span></h2>
+            <p class="text-[var(--muted)] text-center text-[10px] uppercase tracking-[0.2em] font-bold mb-10 opacity-60">Authentication Required</p>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label class="text-[10px] uppercase tracking-widest font-bold text-[var(--muted)] mb-3 block">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}<p class="text-red-500 text-[10px] mt-2 font-bold uppercase tracking-widest">{{ form.username.errors.0 }}</p>{% endif %}
+                </div>
+                <div class="input-group">
+                    <label class="text-[10px] uppercase tracking-widest font-bold text-[var(--muted)] mb-3 block">Password</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}<p class="text-red-500 text-[10px] mt-2 font-bold uppercase tracking-widest">{{ form.password.errors.0 }}</p>{% endif %}
+                </div>
+
+                {% if form.non_field_errors %}
+                <p class="text-red-500 text-[10px] text-center font-bold uppercase tracking-[0.1em] mt-2">
+                    {{ form.non_field_errors.0 }}
+                </p>
+                {% endif %}
+
+                <button type="submit" class="w-full bg-[var(--h)] text-[var(--bg)] py-5 rounded-2xl font-bold text-lg hover:opacity-90 transition-all shadow-xl mt-4">
+                    Login to Account →
+                </button>
+            </form>
+
+            <div class="mt-10 pt-10 border-t border-[var(--divider)] text-center">
+                <p class="text-[var(--muted)] text-xs font-medium">
+                    New to Vantura?
+                    <a href="{% url 'register' %}" class="text-[var(--h)] font-bold hover:text-[var(--brand)] transition-colors ml-2 uppercase tracking-widest text-[10px]">Create an Account</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .input-group input {
+        width: 100%;
+        background: var(--bg);
+        border: 1px solid var(--divider);
+        padding: 1rem 1.25rem;
+        border-radius: 1rem;
+        font-size: 0.95rem;
+        color: var(--h);
+        transition: all 0.3s ease;
+        outline: none;
+    }
+    .input-group input:focus {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 4px var(--brand-alpha);
+        background: var(--card-hover);
+    }
+</style>
+{% endblock %}

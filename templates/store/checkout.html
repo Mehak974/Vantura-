@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% block title %}Checkout – Vantura{% endblock %}
+
+{% block content %}
+<div class="relative pt-32 pb-24 overflow-hidden bg-[var(--bg)]">
+    <!-- Background Blobs -->
+    <div class="blob blob-mint w-[600px] h-[600px] -top-40 -right-40"></div>
+    <div class="blob blob-stone w-[500px] h-[500px] bottom-0 -left-20 opacity-30"></div>
+
+    <div class="max-w-6xl mx-auto px-4 relative z-10">
+        <div class="mb-12">
+            <div class="section-tag mb-4">💳 Checkout</div>
+            <h1 class="font-display text-5xl lg:text-7xl text-[var(--h)] tracking-tight">Finalize <span class="italic font-light text-[var(--brand)]">Order</span></h1>
+        </div>
+
+        <form method="post" id="checkout-form">
+            {% csrf_token %}
+            <div class="grid lg:grid-cols-12 gap-12">
+
+                <!-- Left: Form -->
+                <div class="lg:col-span-8 space-y-8">
+
+                    <!-- Contact Info -->
+                    <div class="glass-card p-8 rounded-3xl bg-white/40 backdrop-blur-md border border-white/40 shadow-xl">
+                        <h3 class="font-display text-2xl mb-8 flex items-center gap-4 text-[var(--h)]">
+                            <span class="w-10 h-10 rounded-full bg-[var(--h)] text-[var(--bg)] flex items-center justify-center text-sm font-bold">1</span>
+                            Contact Information
+                        </h3>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div class="input-group">
+                                <label class="text-[var(--muted)] text-[10px] uppercase tracking-[0.2em] font-bold mb-2 block">Full Name</label>
+                                {{ form.full_name }}
+                                {% if form.full_name.errors %}<p class="text-red-500 text-xs mt-1">{{ form.full_name.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div class="input-group">
+                                <label class="text-[var(--muted)] text-[10px] uppercase tracking-[0.2em] font-bold mb-2 block">Email Address</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}<p class="text-red-500 text-xs mt-1">{{ form.email.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div class="sm:col-span-2 input-group">
+                                <label class="text-[var(--muted)] text-[10px] uppercase tracking-[0.2em] font-bold mb-2 block">Phone Number</label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}<p class="text-red-500 text-xs mt-1">{{ form.phone.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div class="glass-card p-8 rounded-3xl bg-white/40 backdrop-blur-md border border-white/40 shadow-xl">
+                        <h3 class="font-display text-2xl mb-8 flex items-center gap-4 text-[var(--h)]">
+                            <span class="w-10 h-10 rounded-full bg-[var(--h)] text-[var(--bg)] flex items-center justify-center text-sm font-bold">2</span>
+                            Shipping Address
+                        </h3>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div class="sm:col-span-2 input-group">
+                                <label class="text-[var(--muted)] text-[10px] uppercase tracking-[0.2em] font-bold mb-2 block">Street Address</label>
+                                {{ form.address }}
+                                {% if form.address.errors %}<p class="text-red-500 text-xs mt-1">{{ form.address.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div class="input-group">
+                                <label class="text-[var(--muted)] text-[10px] uppercase tracking-[0.2em] font-bold mb-2 block">City</label>
+                                {{ form.city }}
+                                {% if form.city.errors %}<p class="text-red-500 text-[10px] mt-1 font-bold uppercase">{{ form.city.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div class="input-group">
+                                <label class="text-[var(--muted)] text-[10px] uppercase tracking-[0.2em] font-bold mb-2 block">State / Province</label>
+                                {{ form.state }}
+                                {% if form.state.errors %}<p class="text-red-500 text-[10px] mt-1 font-bold uppercase">{{ form.state.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div class="input-group">
+                                <label class="text-[var(--muted)] text-[10px] uppercase tracking-[0.2em] font-bold mb-2 block">Country</label>
+                                {{ form.country }}
+                                {% if form.country.errors %}<p class="text-red-500 text-[10px] mt-1 font-bold uppercase">{{ form.country.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div class="input-group">
+                                <label class="text-[var(--muted)] text-[10px] uppercase tracking-[0.2em] font-bold mb-2 block">ZIP / Postal Code</label>
+                                {{ form.zip_code }}
+                                {% if form.zip_code.errors %}<p class="text-red-500 text-[10px] mt-1 font-bold uppercase">{{ form.zip_code.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment -->
+                    <div class="glass-card p-8 rounded-3xl bg-white/40 backdrop-blur-md border border-white/40 shadow-xl">
+                        <h3 class="font-display text-2xl mb-8 flex items-center gap-4 text-[var(--h)]">
+                            <span class="w-10 h-10 rounded-full bg-[var(--h)] text-[var(--bg)] flex items-center justify-center text-sm font-bold">3</span>
+                            Payment Method
+                        </h3>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <label class="relative flex flex-col gap-4 p-6 rounded-2xl border border-[var(--divider)] cursor-pointer hover:border-[var(--brand)] transition-all group has-[:checked]:border-[var(--brand)] has-[:checked]:bg-[var(--brand)]/5">
+                                <input type="radio" name="payment_method" value="cod" checked class="absolute top-4 right-4 accent-[var(--h)]">
+                                <span class="text-3xl">💵</span>
+                                <div>
+                                    <div class="font-bold text-sm text-[var(--h)]">On Delivery</div>
+                                    <div class="text-[var(--muted)] text-[10px] uppercase tracking-widest mt-1">Cash</div>
+                                </div>
+                            </label>
+                            <label class="relative flex flex-col gap-4 p-6 rounded-2xl border border-[var(--divider)] cursor-pointer hover:border-[var(--brand)] transition-all has-[:checked]:border-[var(--brand)] has-[:checked]:bg-[var(--brand)]/5">
+                                <input type="radio" name="payment_method" value="card" class="absolute top-4 right-4 accent-[var(--h)]">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-3xl">💳</span>
+                                    <span class="text-[8px] bg-[#635BFF] text-white px-2 py-1 rounded font-bold tracking-widest uppercase">Stripe</span>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-sm text-[var(--h)]">Secure Card</div>
+                                    <div class="text-[var(--muted)] text-[10px] uppercase tracking-widest mt-1">Encrypted Pay</div>
+                                </div>
+                            </label>
+                            <label class="relative flex flex-col gap-4 p-6 rounded-2xl border border-[var(--divider)] cursor-pointer hover:border-[var(--brand)] transition-all has-[:checked]:border-[var(--brand)] has-[:checked]:bg-[var(--brand)]/5">
+                                <input type="radio" name="payment_method" value="paypal" class="absolute top-4 right-4 accent-[var(--h)]">
+                                <span class="text-3xl">🅿️</span>
+                                <div>
+                                    <div class="font-bold text-sm text-[var(--h)]">PayPal</div>
+                                    <div class="text-[var(--muted)] text-[10px] uppercase tracking-widest mt-1">Digital Wallet</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Order Notes -->
+                    <div class="glass-card p-8 rounded-3xl bg-white/40 backdrop-blur-md border border-white/40 shadow-xl">
+                        <h3 class="font-display text-2xl mb-4 text-[var(--h)]">Order Notes <span class="text-[var(--muted)] font-normal text-sm opacity-50 ml-2">(Optional)</span></h3>
+                        <div class="input-group">
+                            {{ form.notes }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Summary -->
+                <div class="lg:col-span-4">
+                    <div class="glass-card p-8 rounded-3xl sticky top-24 bg-white/40 backdrop-blur-md border border-white/40 shadow-2xl">
+                        <h3 class="font-display font-bold text-2xl mb-8">Summary</h3>
+
+                        <div class="space-y-4 mb-8 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                            {% for item in items %}
+                            <div class="flex gap-4 items-center">
+                                <div class="relative w-14 h-14 flex-shrink-0">
+                                    <div class="absolute -inset-1 border border-[var(--brand)]/20 rounded-lg rotate-3"></div>
+                                    <div class="relative z-10 w-full h-full rounded-lg overflow-hidden bg-[var(--card-hover)]">
+                                        <img src="{{ item.product.get_image_url }}" alt="{{ item.product.name }}" 
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                             class="w-full h-full object-cover">
+                                        <div class="w-full h-full premium-placeholder hidden"></div>
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex justify-between items-center gap-2">
+                                        <div class="text-[10px] font-bold text-[var(--h)] line-clamp-1 uppercase tracking-widest">{{ item.product.name }}</div>
+                                        <div class="text-[10px] font-bold text-[var(--h)] flex-shrink-0">${{ item.subtotal }}</div>
+                                    </div>
+                                    <div class="text-[var(--muted)] text-[8px] uppercase tracking-[0.2em] mt-1">Quantity: {{ item.quantity }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="space-y-4 mb-8 pt-8 border-t border-[var(--divider)]">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-[var(--muted)] font-semibold uppercase tracking-widest">Subtotal</span>
+                                <span class="font-bold text-[var(--h)]">${{ cart.total_price }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-[var(--muted)] font-semibold uppercase tracking-widest">Delivery</span>
+                                <span class="text-green-600 font-bold uppercase tracking-widest">Complimentary</span>
+                            </div>
+                            <div class="pt-6 border-t border-[var(--divider)]">
+                                <div class="flex justify-between items-end">
+                                    <span class="font-display font-bold text-lg">Total Amount</span>
+                                    <span class="font-display font-bold text-4xl text-[var(--h)]">${{ cart.total_price }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="place-order-btn" class="w-full bg-[var(--h)] text-[var(--bg)] py-3.5 rounded-xl font-bold text-base hover:opacity-90 transition-all shadow-xl flex items-center justify-center gap-3 mb-4">
+                            🔒 <span id="btn-text">Complete Purchase</span>
+                        </button>
+                        
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const btn = document.getElementById('place-order-btn');
+                                const btnText = document.getElementById('btn-text');
+                                const radios = document.querySelectorAll('input[name="payment_method"]');
+                                
+                                function updateButton() {
+                                    const selected = document.querySelector('input[name="payment_method"]:checked').value;
+                                    if (selected === 'card') {
+                                        btnText.textContent = 'Proceed to Secure Payment →';
+                                    } else {
+                                        btnText.textContent = 'Complete Purchase';
+                                    }
+                                }
+                                
+                                radios.forEach(r => r.addEventListener('change', updateButton));
+                                updateButton(); // Initial state
+                            });
+                        </script>
+                        <p class="text-center text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--muted)] opacity-50">
+                            Secured SSL-Encrypted Checkout
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .input-group input, 
+    .input-group textarea, 
+    .input-group select {
+        width: 100%;
+        background: var(--bg);
+        border: 1px solid var(--divider);
+        padding: 1rem 1.25rem;
+        border-radius: 0.75rem;
+        font-size: 0.95rem;
+        color: var(--h);
+        transition: all 0.3s ease;
+        outline: none;
+    }
+    .input-group input:focus, 
+    .input-group textarea:focus, 
+    .input-group select:focus {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 4px var(--brand-alpha);
+        background: var(--card-hover);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: var(--divider);
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% if products %}
+<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+    {% for product in products %}
+    <div class="product-card animate-on-scroll" data-delay="{% cycle '0' '100' '200' '300' %}">
+        <div class="img-wrap relative aspect-square overflow-hidden bg-[var(--card-hover)]">
+            <img src="{{ product.get_image_url }}" alt="{{ product.name }}" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="w-full h-full premium-placeholder hidden"></div>
+
+            <div class="absolute top-4 left-4 flex flex-col gap-2">
+                {% if product.is_founder_choice %}<span class="badge bg-brand-500 text-[#1d231f] border-0">✨ Julian's Choice</span>{% endif %}
+                {% if product.is_new %}<span class="badge badge-new">Just in</span>{% endif %}
+                {% if product.discount_percentage %}<span class="badge badge-sale">{{ product.discount_percentage }}% Less</span>{% endif %}
+            </div>
+        </div>
+
+        <div class="p-6 flex flex-col flex-1">
+            <a href="{% url 'product_detail' product.slug %}" class="font-display font-medium text-lg lg:text-xl hover:text-[var(--brand)] transition-colors line-clamp-2 mb-4 leading-tight">{{ product.name }}</a>
+
+            <div class="flex items-center justify-between mt-auto">
+                <div class="flex flex-col">
+                    <span class="font-display font-bold text-xl">${{ product.price }}</span>
+                    {% if product.compare_price %}<span class="text-muted text-sm line-through opacity-50">${{ product.compare_price }}</span>{% endif %}
+                </div>
+                {% if product.in_stock %}
+                <button data-add-to-cart="{{ product.id }}"
+                        class="w-12 h-12 rounded-lg bg-[var(--brand)] text-[#1d231f] flex items-center justify-center hover:opacity-90 transition-all shadow-md">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if products.has_other_pages %}
+<div class="flex justify-center items-center gap-4 mt-20 animate-on-scroll">
+    {% if products.has_previous %}
+    <a href="?page={{ products.previous_page_number }}{% if current_subcategory %}&subcategory={{ current_subcategory.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" 
+       class="ajax-link w-12 h-12 rounded-full border border-[var(--divider)] flex items-center justify-center hover:bg-[var(--h)] hover:text-[var(--bg)] transition-all">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+    </a>
+    {% endif %}
+    
+    <div class="flex gap-2">
+        {% for num in products.paginator.page_range %}
+        {% if products.number == num %}
+        <span class="w-12 h-12 rounded-full bg-[var(--h)] text-[var(--bg)] flex items-center justify-center font-bold">{{ num }}</span>
+        {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+        <a href="?page={{ num }}{% if current_subcategory %}&subcategory={{ current_subcategory.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" 
+           class="ajax-link w-12 h-12 rounded-full border border-[var(--divider)] flex items-center justify-center hover:border-[var(--h)] transition-all">{{ num }}</a>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    {% if products.has_next %}
+    <a href="?page={{ products.next_page_number }}{% if current_subcategory %}&subcategory={{ current_subcategory.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" 
+       class="ajax-link w-12 h-12 rounded-full border border-[var(--divider)] flex items-center justify-center hover:bg-[var(--h)] hover:text-[var(--bg)] transition-all">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<div class="text-center py-32 animate-on-scroll">
+    <div class="text-8xl mb-8 opacity-20">📦</div>
+    <h3 class="font-display font-bold text-3xl mb-4">Nothing here, yet.</h3>
+    <p class="text-[var(--p)] text-lg mb-10 max-w-md mx-auto opacity-60">We are currently adding new items to this collection. Check back soon for fresh arrivals.</p>
+    <a href="{% url 'catalog' %}" class="bg-[var(--h)] text-[var(--bg)] px-10 py-5 rounded-lg font-semibold hover:opacity-90 transition-all shadow-xl">
+        Browse All Collections
+    </a>
+</div>
+{% endif %}

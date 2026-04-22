@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Privacy Policy – Vantura{% endblock %}
+{% block content %}
+<div class="pt-28 pb-20 px-4 min-h-screen">
+    <div class="max-w-3xl mx-auto">
+        <h1 class="font-display font-black text-4xl text-[var(--h)] mb-2">Privacy Policy</h1>
+        <p class="text-[var(--muted)] text-sm mb-10">Last updated: January 1, 2025</p>
+        <div class="glass-card p-8 space-y-8 text-[var(--p)] leading-relaxed">
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">1. Information We Collect</h2><p>We collect information you provide directly to us, such as when you create an account, place an order, or contact us. This includes your name, email address, shipping address, phone number, and payment information.</p></section>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">2. How We Use Your Information</h2><p>We use the information we collect to process your orders, send order confirmations, provide customer support, send promotional communications (with your consent), and improve our services.</p></section>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">3. Information Sharing</h2><p>We do not sell, trade, or otherwise transfer your personally identifiable information to outside parties without your consent, except as necessary to complete your transactions (e.g., shipping partners).</p></section>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">4. Data Security</h2><p>We implement industry-standard security measures to protect your personal information. Your data is transmitted using SSL encryption, and we regularly review our security practices.</p></section>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">5. Cookies</h2><p>We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. You can control cookie settings through your browser preferences. See our <a href="{% url 'cookies_policy' %}" class="text-[var(--brand)] hover:underline">Cookie Policy</a> for details.</p></section>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">6. Your Rights</h2><p>You have the right to access, update, or delete your personal information. Contact us at privacy@vantura.com for any data-related requests.</p></section>
+            <section><h2 class="font-display font-bold text-[var(--h)] text-xl mb-3">7. Contact Us</h2><p>For privacy-related questions, contact: <a href="mailto:privacy@vantura.com" class="text-[var(--brand)] hover:underline">privacy@vantura.com</a></p></section>
+        </div>
+    </div>
+</div>
+{% endblock %}

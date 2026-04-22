@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% block title %}Your Cart – Vantura{% endblock %}
+
+{% block content %}
+<div class="relative pt-32 pb-24 overflow-hidden bg-[var(--bg)]">
+    <!-- Background Blobs -->
+    <div class="blob blob-mint w-[500px] h-[500px] -top-20 -left-20"></div>
+    <div class="blob blob-stone w-[400px] h-[400px] bottom-0 right-0 opacity-30"></div>
+
+    <div class="max-w-6xl mx-auto px-4 relative z-10">
+        <div class="mb-12 animate-on-scroll">
+            <div class="section-tag mb-4">🛒 Cart</div>
+            <h1 class="font-display text-5xl lg:text-7xl text-[var(--h)] tracking-tight">Your <span class="italic font-light text-[var(--brand)]">Cart</span></h1>
+        </div>
+
+        {% if items %}
+        <div class="grid lg:grid-cols-12 gap-12">
+            <!-- Cart Items -->
+            <div class="lg:col-span-8 space-y-6 animate-on-scroll">
+                {% for item in items %}
+                <div class="glass-card p-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center rounded-3xl bg-white/40 backdrop-blur-md border border-white/40 shadow-xl group" id="cart-item-{{ item.id }}">
+                    <!-- Image -->
+                    <a href="{% url 'product_detail' item.product.slug %}" class="flex-shrink-0 relative">
+                        <div class="absolute -inset-2 border border-[var(--brand)]/10 rounded-2xl rotate-2 z-0 group-hover:rotate-0 transition-transform"></div>
+                        <div class="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-[var(--card-hover)]">
+                            <img src="{{ item.product.get_image_url }}" alt="{{ item.product.name }}" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                 class="w-full h-full object-cover">
+                            <div class="w-full h-full premium-placeholder hidden"></div>
+                        </div>
+                    </a>
+
+                    <!-- Details -->
+                    <div class="flex-1 min-w-0">
+                        <a href="{% url 'product_detail' item.product.slug %}" class="font-display font-medium text-lg lg:text-xl text-[var(--h)] hover:text-[var(--brand)] transition-colors line-clamp-1 mb-1">{{ item.product.name }}</a>
+                        {% if item.product.category %}<div class="text-[var(--muted)] text-xs uppercase tracking-widest font-semibold">{{ item.product.category.name }}</div>{% endif %}
+
+                        <div class="flex items-center gap-6 mt-4">
+                            <!-- Qty control -->
+                            <div class="flex items-center bg-[var(--bg)] rounded-xl border border-[var(--divider)] overflow-hidden">
+                                <button onclick="updateQty({{ item.id }}, -1)" class="px-4 py-2 hover:bg-[var(--card-hover)] transition-colors font-bold">−</button>
+                                <span id="qty-{{ item.id }}" class="w-10 text-center font-bold text-sm">{{ item.quantity }}</span>
+                                <button onclick="updateQty({{ item.id }}, 1)" class="px-4 py-2 hover:bg-[var(--card-hover)] transition-colors font-bold">+</button>
+                            </div>
+                            <span class="text-[var(--muted)] text-xs font-semibold uppercase tracking-widest">@ ${{ item.product.price }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Price + Remove -->
+                    <div class="flex sm:flex-col items-end justify-between sm:justify-center w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-0 border-[var(--divider)]">
+                        <span id="subtotal-{{ item.id }}" class="font-display font-bold text-2xl text-[var(--h)]">${{ item.subtotal }}</span>
+                        <button onclick="removeItem({{ item.id }})"
+                                class="text-[var(--muted)] hover:text-red-500 transition-colors text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                            Remove
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="pt-8">
+                    <a href="{% url 'catalog' %}" class="inline-flex items-center gap-3 text-[var(--h)] font-bold uppercase tracking-widest text-xs hover:text-[var(--brand)] transition-all">
+                        <span class="w-8 h-8 rounded-full border border-[var(--divider)] flex items-center justify-center">←</span>
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="lg:col-span-4 animate-on-scroll" style="animation-delay: 200ms;">
+                <div class="glass-card p-8 rounded-3xl sticky top-24 bg-white/40 backdrop-blur-md border border-white/40 shadow-2xl">
+                    <h3 class="font-display font-bold text-2xl mb-8">Summary</h3>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-[var(--muted)] font-semibold uppercase tracking-widest">Items (<span id="total-items">{{ cart.total_items }}</span>)</span>
+                            <span id="cart-total" class="font-bold text-[var(--h)]">${{ cart.total_price }}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-[var(--muted)] font-semibold uppercase tracking-widest">Delivery</span>
+                            <span class="text-green-600 font-bold uppercase">Complimentary</span>
+                        </div>
+                        <div class="pt-6 border-t border-[var(--divider)]">
+                            <div class="flex justify-between items-end">
+                                <span class="font-display font-bold text-lg">Total</span>
+                                <span class="font-display font-bold text-4xl text-[var(--h)]" id="order-total">${{ cart.total_price }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'checkout' %}" class="w-full bg-[var(--h)] text-[var(--bg)] py-5 rounded-xl font-bold text-lg hover:opacity-90 transition-all shadow-xl flex items-center justify-center gap-3 mb-4">
+                        Checkout Now →
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}?next={% url 'checkout' %}" class="w-full bg-[var(--h)] text-[var(--bg)] py-5 rounded-xl font-bold text-lg hover:opacity-90 transition-all shadow-xl flex items-center justify-center gap-3 mb-4">
+                        Login to Checkout →
+                    </a>
+                    {% endif %}
+
+                    <div class="text-center text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--muted)] opacity-50">
+                        🔒 Secured Transaction
+                    </div>
+
+                    <!-- Trust badges -->
+                    <div class="flex justify-center gap-8 mt-8 pt-8 border-t border-[var(--divider)]">
+                        <div class="flex flex-col items-center gap-2">
+                            <span class="text-xl">🚚</span>
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-[var(--muted)]">Free Shipping</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <span class="text-xl">↩️</span>
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-[var(--muted)]">Simple Returns</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- Empty cart -->
+        <div class="flex flex-col items-center justify-center py-32 text-center animate-on-scroll">
+            <div class="relative mb-12">
+                <div class="text-9xl opacity-10">🛍️</div>
+                <div class="blob blob-mint w-40 h-40 absolute -top-10 -right-10 opacity-30"></div>
+            </div>
+            <h2 class="font-display font-bold text-4xl mb-4">Your cart is empty.</h2>
+            <p class="text-[var(--p)] text-lg mb-10 max-w-md mx-auto opacity-60">Browse our collection and find something extraordinary for your life.</p>
+            <a href="{% url 'catalog' %}" class="bg-[var(--h)] text-[var(--bg)] px-12 py-5 rounded-xl font-bold text-lg hover:opacity-90 transition-all shadow-2xl">
+                Explore Collections
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+function updateQty(itemId, delta) {
+    const qtyEl = document.getElementById('qty-' + itemId);
+    const newQty = Math.max(1, parseInt(qtyEl.textContent) + delta);
+    qtyEl.textContent = newQty;
+
+    const fd = new FormData();
+    fd.append('quantity', newQty);
+    fd.append('csrfmiddlewaretoken', csrfToken);
+
+    fetch(`/cart/update/${itemId}/`, { method: 'POST', body: fd, headers: { 'X-Requested-With': 'XMLHttpRequest' }})
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('subtotal-' + itemId).textContent = '$' + data.subtotal.toFixed(2);
+            document.getElementById('cart-total').textContent = '$' + data.cart_total.toFixed(2);
+            document.getElementById('order-total').textContent = '$' + data.cart_total.toFixed(2);
+            updateCartBadge(data.cart_count);
+        }
+    });
+}
+
+function removeItem(itemId) {
+    const fd = new FormData();
+    fd.append('csrfmiddlewaretoken', csrfToken);
+
+    fetch(`/cart/remove/${itemId}/`, { method: 'POST', body: fd, headers: { 'X-Requested-With': 'XMLHttpRequest' }})
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            const el = document.getElementById('cart-item-' + itemId);
+            el.style.opacity = '0';
+            el.style.transform = 'translateX(20px)';
+            el.style.transition = 'all 0.3s ease';
+            setTimeout(() => { el.remove(); }, 300);
+            document.getElementById('cart-total').textContent = '$' + data.cart_total.toFixed(2);
+            document.getElementById('order-total').textContent = '$' + data.cart_total.toFixed(2);
+            updateCartBadge(data.cart_count);
+            if (data.cart_count === 0) location.reload();
+        }
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}404 – Page Not Found – Vantura{% endblock %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4 py-20">
+    <div class="text-center">
+        <div class="font-display font-black text-9xl text-white/5 leading-none select-none">404</div>
+        <div class="font-display font-black text-5xl text-white -mt-8 mb-4">Page Not Found</div>
+        <p class="text-slate-400 mb-8">The page you're looking for doesn't exist or has been moved.</p>
+        <div class="flex gap-4 justify-center">
+            <a href="{% url 'home' %}" class="btn-primary">Go Home</a>
+            <a href="{% url 'catalog' %}" class="btn-outline">Browse Products</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

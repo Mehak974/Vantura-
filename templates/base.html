@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="{% block meta_description %}Vantura – Premium Lifestyle Essentials. Shop health supplements, pet care, beauty, tools, toys and more.{% endblock %}">
+    <meta name="keywords"
+        content="{% block meta_keywords %}vantura, online store, supplements, pet care, beauty, tools, toys{% endblock %}">
+    
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}{{ self.title }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ self.meta_description }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{{ STATIC_URL }}img/og_image.png{% endblock %}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta property="twitter:title" content="{% block twitter_title %}{{ self.title }}{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}{{ self.meta_description }}{% endblock %}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+    
+    <title>{% block title %}Vantura – Premium Lifestyle Essentials{% endblock %}</title>
+
+    <!-- CSRF Token for JS -->
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f2f5f3',
+                            100: '#e1e9e4',
+                            200: '#c5d5cd',
+                            300: '#9bb2a4', // Muted Mint
+                            400: '#7a9181',
+                            500: '#9bb2a4', 
+                            600: '#7a9181',
+                            700: '#5c6e61',
+                            800: '#3f4b42',
+                            900: '#1d231f',
+                        },
+                        accent: { 400: '#c2996b', 500: '#b68d40' },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#1a1a1a',
+                            700: '#2d2d2d',
+                            600: '#404040',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['"Fraunces"', 'serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'slide-up': 'slideUp 0.6s ease forwards',
+                        'fade-in': 'fadeIn 0.5s ease forwards',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand: #9bb2a4;
+            --brand-dark: #7a9181;
+            --accent: #b68d40;
+            --bg: #121212;
+            --bg-nav: rgba(18,18,18,0.95);
+            --h: #ffffff;
+            --p: #d1d1d1;
+            --muted: #b0b0b0;
+            --glass: rgba(255,255,255,0.02);
+            --glass-border: rgba(255,255,255,0.05);
+            --card-bg: #1e1e1e;
+            --card-hover: #252525;
+            --divider: rgba(255,255,255,0.06);
+            --hero-1: #0a0a0a;
+            --hero-2: #1a1a1a;
+            --brand-hover: #c5d5cd;
+        }
+
+        /* Light Mode Overrides */
+        .light-mode {
+            --bg: #f2f2f1; /* Soft Stone */
+            --bg-nav: rgba(242,242,241,0.95);
+            --h: #1a1a1a;
+            --p: #404040;
+            --muted: #a3a3a3;
+            --glass: rgba(255,255,255,0.8);
+            --glass-border: rgba(0,0,0,0.06);
+            --card-bg: #ffffff;
+            --card-hover: #ebebea;
+            --divider: rgba(0,0,0,0.06);
+            --hero-1: #f2f2f1;
+            --hero-2: #ebebea;
+            --brand-hover: var(--brand-dark);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--p);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        /* Standardized Typography */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .text-h {
+            color: var(--h);
+            transition: color 0.4s ease;
+        }
+
+        p,
+        .text-p {
+            color: var(--p);
+            transition: color 0.4s ease;
+        }
+
+        .text-muted {
+            color: var(--muted);
+            transition: color 0.4s ease;
+        }
+
+        input,
+        select,
+        textarea {
+            color: var(--h);
+        }
+
+        .hover-brand:hover {
+            color: var(--brand-hover) !important;
+        }
+
+        /* Glass morphism */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(26, 79, 255, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(26, 79, 255, 0.15);
+        }
+
+        /* Glow effects */
+        .glow-blue {
+            box-shadow: 0 0 30px rgba(26, 79, 255, 0.3);
+        }
+
+        .glow-orange {
+            box-shadow: 0 0 30px rgba(249, 115, 22, 0.3);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(26, 79, 255, 0.6);
+        }
+
+
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--brand);
+            color: #1d231f; /* Dark contrast for mint */
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--brand-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--h);
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid var(--divider);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--card-hover);
+            border-color: var(--accent);
+            color: var(--h);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-accent:hover {
+            background: var(--accent);
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(182, 141, 64, 0.2);
+        }
+
+        /* Form inputs */
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--divider);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--h);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent);
+            background: var(--card-hover);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--muted);
+        }
+
+        .form-select option {
+            background: var(--bg);
+            color: var(--h);
+        }
+
+        /* Nav */
+        #navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        #navbar.scrolled {
+            background: var(--bg-nav);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--divider);
+        }
+
+        .nav-link {
+            color: var(--muted);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+            padding: 4px 0;
+        }
+
+        /* Nav Link Hover Underline */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--brand);
+            transition: width 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .nav-link:hover {
+            color: var(--h);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--brand);
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Dropdown */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            min-width: 200px;
+            background: var(--bg-nav);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--divider);
+            border-radius: 20px;
+            padding: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 10px 16px;
+            border-radius: 12px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--brand-alpha);
+            color: var(--h);
+        }
+
+        /* Mobile menu */
+        #mobile-menu {
+            display: none;
+            background: rgba(2, 6, 23, 0.98);
+            backdrop-filter: blur(20px);
+        }
+
+        #mobile-menu.open {
+            display: block;
+        }
+
+        /* Product card */
+        .product-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px) scale(1.02) rotate(-1deg);
+            border-color: var(--brand);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        }
+        
+        .product-card:nth-child(even):hover {
+            transform: translateY(-8px) scale(1.02) rotate(1deg);
+        }
+
+        .product-card .img-wrap {
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .product-card .img-wrap img {
+            transition: transform 0.6s ease;
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .product-card:hover .img-wrap img {
+            transform: scale(1.08);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: 'Syne', sans-serif;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-new {
+            background: rgba(26, 79, 255, 0.2);
+            color: #85a8ff;
+            border: 1px solid rgba(26, 79, 255, 0.3);
+        }
+
+        .badge-sale {
+            background: rgba(249, 115, 22, 0.2);
+            color: #fb923c;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .badge-out {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Star rating */
+        .stars {
+            color: #f59e0b;
+            letter-spacing: 2px;
+        }
+
+        /* Section title */
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-hover);
+            border: 1px solid var(--divider);
+            border-radius: 4px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Toast */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: rgba(15, 23, 42, 0.98);
+            border: 1px solid rgba(155, 178, 164, 0.3);
+            border-radius: 12px;
+            padding: 14px 20px;
+            color: #e2e8f0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 280px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.4s ease forwards;
+        }
+
+        .toast.success {
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .toast.error {
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1a4fff;
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(26, 79, 255, 0.3);
+            }
+
+            to {
+                box-shadow: 0 0 40px rgba(26, 79, 255, 0.6);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--divider), transparent);
+        }
+
+        /* Loading */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        /* 3D Canvas */
+
+
+        /* Noise overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* Orbit lines */
+        .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(26, 79, 255, 0.1);
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Organic Background Blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            will-change: transform;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+        .blob-mint { background: var(--brand); }
+        .blob-stone { background: var(--accent); }
+
+        /* Standardized Premium Placeholder */
+        .premium-placeholder {
+            background: linear-gradient(135deg, #f2f2f1 0%, #e1e9e4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .premium-placeholder::after {
+            content: 'V';
+            font-family: 'Fraunces', serif;
+            font-size: 4rem;
+            color: var(--brand);
+            opacity: 0.1;
+        }
+
+        /* Page transition */
+        .page-enter {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="page-enter bg-[var(--bg)] min-h-screen relative">
+    <!-- Global Background Blobs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div class="blob blob-mint w-[1000px] h-[1000px] -top-[500px] -left-[300px] opacity-[0.15]"></div>
+        <div class="blob blob-stone w-[800px] h-[800px] bottom-[10%] -right-[300px] opacity-[0.08]"></div>
+    </div>
+
+    <!-- ═══ NAVBAR ═══════════════════════════════════════════════════════════════ -->
+    <nav id="navbar" class="px-4 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+            <!-- Logo -->
+            <a href="{% url 'home' %}" class="flex items-center gap-4 group/logo">
+                <div class="w-10 h-10 rounded-full border-2 border-[var(--brand)] flex items-center justify-center font-display font-black text-[var(--brand)] text-lg transition-all group-hover/logo:bg-[var(--brand)] group-hover/logo:text-[var(--bg)]">
+                    V</div>
+                <div>
+                    <span class="font-display font-bold text-2xl tracking-tight text-[var(--h)]">Vantura</span>
+                    <div class="text-[9px] text-[var(--muted)] font-bold uppercase tracking-[0.2em] leading-none mt-1 opacity-50">Lifestyle Store</div>
+                </div>
+            </a>
+
+            <!-- Desktop Nav -->
+            <div class="hidden lg:flex items-center gap-8">
+                <a href="{% url 'home' %}" class="nav-link text-sm">Home</a>
+
+                <!-- Shop dropdown -->
+                <div class="dropdown">
+                    <button class="nav-link text-sm flex items-center gap-1">
+                        Shop
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu"
+                        style="min-width:700px; display:grid; grid-template-columns:repeat(3,1fr); gap:4px;">
+                        {% for cat in all_categories %}
+                        <div>
+                            <a href="{% url 'category' cat.slug %}"
+                                class="dropdown-item font-semibold text-[var(--h)] border-b border-[var(--divider)] mb-1">{{ cat.name }}</a>
+                            {% for sub in cat.subcategories.all %}
+                            <a href="{% url 'category' cat.slug %}?subcategory={{ sub.slug }}"
+                                class="dropdown-item text-xs">→ {{ sub.name }}</a>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <a href="{% url 'catalog' %}" class="nav-link text-sm">Catalog</a>
+                <a href="{% url 'about' %}" class="nav-link text-sm">About</a>
+                <a href="{% url 'contact' %}" class="nav-link text-sm">Contact</a>
+            </div>
+
+            <!-- Right actions -->
+            <div class="flex items-center gap-3">
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" onclick="toggleTheme()"
+                    class="p-2 rounded-xl hover:bg-white/5 transition-all group" title="Toggle Theme">
+                    <!-- Sun icon (shown in light mode) -->
+                    <svg id="sun-icon" class="w-6 h-6 text-brand-400 hidden" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l.707.707M6.343 6.343l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                    </svg>
+                    <!-- Moon icon (shown in dark mode) -->
+                    <svg id="moon-icon" class="w-5 h-5 text-muted hover-brand" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                <!-- Search -->
+                <form action="{% url 'search' %}" method="get" class="hidden md:flex items-center">
+                    <div class="relative">
+                        <input type="text" name="q" placeholder="Search..."
+                            class="form-input text-sm py-2 pl-9 pr-4 w-32 focus:w-44 transition-all duration-300"
+                            style="border-radius:20px;">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.35-4.35" />
+                        </svg>
+                    </div>
+                </form>
+
+                <!-- Cart -->
+                <a href="javascript:void(0)" onclick="toggleCartDrawer()" class="relative p-2 rounded-xl hover:bg-white/5 transition-all group">
+                    <svg class="w-6 h-6 text-muted hover-brand transition-colors" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <path d="M16 10a4 4 0 01-8 0" />
+                    </svg>
+                    <span id="cart-badge"
+                        class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-brand-500 text-white text-[10px] font-bold flex items-center justify-center">{{ cart_count|default:0 }}</span>
+                </a>
+
+                {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <button class="flex items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-all">
+                        <div
+                            class="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center text-sm font-bold text-[#1d231f]">
+                            {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                        </div>
+                        <span class="text-sm font-medium text-[var(--p)] hidden sm:inline">Hi, {{ user.first_name|default:"Friend" }}</span>
+                    </button>
+                    <div class="dropdown-menu" style="left:auto;right:0;transform:translateX(0) translateY(10px);">
+                        <a href="{% url 'profile' %}" class="dropdown-item">👤 My Profile</a>
+                        <a href="{% url 'profile' %}" class="dropdown-item">📦 My Orders</a>
+                        {% if user.is_staff %}<a href="/admin/" class="dropdown-item">⚙️ Admin Panel</a>{% endif %}
+                        <div class="divider my-1"></div>
+                        <a href="{% url 'logout' %}" class="dropdown-item text-red-500">🚪 Logout</a>
+                    </div>
+                </div>
+                {% else %}
+                <a href="{% url 'login' %}" class="nav-link text-sm py-2 px-4 hidden sm:flex">Login</a>
+                <a href="{% url 'register' %}" class="btn-primary text-sm py-2 px-4 hidden sm:flex">Sign Up</a>
+                {% endif %}
+
+                <!-- Mobile menu toggle -->
+                <button id="menu-btn" class="lg:hidden p-2 rounded-xl hover:bg-white/5" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="lg:hidden mt-4 rounded-2xl p-4 border border-white/5">
+            <form action="{% url 'search' %}" method="get" class="mb-4">
+                <input type="text" name="q" placeholder="Search products..." class="form-input text-sm">
+            </form>
+            <div class="space-y-1">
+                <a href="{% url 'home' %}" class="block py-2 px-4 rounded-xl hover:bg-brand-500/10 hover-brand">Home</a>
+                <a href="{% url 'catalog' %}" class="block py-2 px-4 rounded-xl hover:bg-brand-500/10 hover-brand">All
+                    Products</a>
+                {% for cat in all_categories %}
+                <a href="{% url 'category' cat.slug %}"
+                    class="block py-2 px-4 rounded-xl hover:bg-brand-500/10 hover-brand">{{ cat.name }}</a>
+                {% endfor %}
+                <a href="{% url 'about' %}"
+                    class="block py-2 px-4 rounded-xl hover:bg-brand-500/10 hover-brand">About</a>
+                <a href="{% url 'contact' %}"
+                    class="block py-2 px-4 rounded-xl hover:bg-brand-500/10 hover-brand">Contact</a>
+                <div class="divider my-2"></div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="block py-2 px-4 rounded-xl hover:bg-brand-500/10 hover-brand">My
+                    Profile</a>
+                <a href="{% url 'logout' %}"
+                    class="block py-2 px-4 rounded-xl hover:bg-red-500/10 text-red-500">Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}"
+                    class="block py-2 px-4 rounded-xl hover:bg-brand-500/10 hover-brand">Login</a>
+                <a href="{% url 'register' %}"
+                    class="block py-2 px-4 rounded-xl bg-brand-500 text-white font-bold text-center mt-4">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══ MESSAGES ══════════════════════════════════════════════════════════════ -->
+    {% if messages %}
+    <div id="toast-container">
+        {% for message in messages %}
+        <div class="toast {% if message.tags %}{{ message.tags }}{% endif %}" id="toast-{{ forloop.counter }}">
+            {% if 'success' in message.tags %}✅{% elif 'error' in message.tags %}❌{% elif 'warning' in message.tags %}⚠️{% else %}ℹ️{% endif %}
+            <span>{{ message }}</span>
+            <button onclick="this.parentElement.remove()" class="ml-auto text-slate-500 hover:text-white">✕</button>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.toast').forEach(t => {
+                t.style.opacity = '0'; t.style.transform = 'translateX(100px)';
+                t.style.transition = 'all 0.4s ease';
+                setTimeout(() => t.remove(), 400);
+            });
+        }, 4000);
+    </script>
+    {% endif %}
+
+    <!-- ═══ MAIN CONTENT ═══════════════════════════════════════════════════════════ -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ═══ FOOTER ════════════════════════════════════════════════════════════════ -->
+    <footer class="mt-24 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+
+                <!-- Brand -->
+                <div class="lg:col-span-2">
+                    <a href="{% url 'home' %}" class="flex items-center gap-4 mb-8 group/footer-logo">
+                        <div class="w-10 h-10 rounded-full border-2 border-[var(--brand)] flex items-center justify-center font-display font-black text-[var(--brand)] text-lg transition-all group-hover/footer-logo:bg-[var(--brand)] group-hover/footer-logo:text-[var(--bg)]">
+                            V</div>
+                        <span class="font-display font-bold text-2xl tracking-tight text-[var(--h)]">Vantura</span>
+                    </a>
+                    <p class="text-muted text-sm leading-relaxed mb-6 opacity-80">
+                        Vantura is a collection of essentials for the way you live—from organic wellness to tactile home goods. Designed for those who seek beauty in the everyday.
+                    </p>
+                    <div class="flex gap-3">
+                        <a href="#"
+                            class="w-9 h-9 rounded-xl glass flex items-center justify-center text-slate-400 hover:text-white hover:border-brand-500 transition-all">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="w-9 h-9 rounded-xl glass flex items-center justify-center text-slate-400 hover:text-white hover:border-brand-500 transition-all">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="w-9 h-9 rounded-xl glass flex items-center justify-center text-slate-400 hover:text-white hover:border-brand-500 transition-all">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Shop -->
+                <div>
+                    <h4 class="font-display font-semibold mb-4 text-sm uppercase tracking-wider">Shop</h4>
+                    <ul class="space-y-2">
+                        {% for cat in all_categories %}
+                        <li><a href="{% url 'category' cat.slug %}"
+                                class="text-muted hover-brand text-sm transition-colors">{{ cat.name }}</a></li>
+                        {% endfor %}
+                        <li><a href="{% url 'catalog' %}"
+                                class="text-brand-500 hover:text-brand-400 text-sm transition-colors">View All →</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Help -->
+                <div>
+                    <h4 class="font-display font-semibold mb-4 text-sm uppercase tracking-wider">Help</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'about' %}" class="text-muted hover-brand text-sm transition-colors">About
+                                Us</a></li>
+                        <li><a href="{% url 'contact' %}"
+                                class="text-muted hover-brand text-sm transition-colors">Contact Us</a></li>
+                        <li><a href="{% url 'return_exchange' %}"
+                                class="text-muted hover-brand text-sm transition-colors">Returns & Exchanges</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}" class="text-muted hover-brand text-sm transition-colors">Track
+                                Order</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h4 class="font-display font-semibold mb-4 text-sm uppercase tracking-wider">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'privacy_policy' %}"
+                                class="text-muted hover-brand text-sm transition-colors">Privacy Policy</a></li>
+                        <li><a href="{% url 'cookies_policy' %}"
+                                class="text-muted hover-brand text-sm transition-colors">Cookies Policy</a></li>
+                        <li><a href="{% url 'terms_conditions' %}"
+                                class="text-muted hover-brand text-sm transition-colors">Terms & Conditions</a></li>
+                        <li><a href="{% url 'return_exchange' %}"
+                                class="text-muted hover-brand text-sm transition-colors">Return Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </footer>
+
+    <!-- ═══ COOKIE BANNER ═════════════════════════════════════════════════════════ -->
+    <div id="cookie-banner" class="fixed bottom-6 left-6 right-6 max-w-2xl mx-auto glass rounded-2xl p-5 z-50 hidden"
+        style="border:1px solid var(--brand);">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div class="text-2xl">🌿</div>
+            <div class="flex-1 text-sm text-slate-300">
+                We use cookies to enhance your journey. By continuing, you agree to our <a
+                    href="{% url 'cookies_policy' %}" class="text-brand-300 hover:underline">Cookie Policy</a>.
+            </div>
+            <div class="flex gap-3 flex-shrink-0">
+                <button onclick="acceptCookies()" class="btn-primary py-2 px-4 text-sm">Accept</button>
+                <button onclick="declineCookies()" class="btn-outline py-2 px-4 text-sm">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SHOPPING BAG DRAWER ═══════════════════════════════════════════════════ -->
+    <div id="cart-drawer-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[2000] opacity-0 pointer-events-none transition-opacity duration-500" onclick="toggleCartDrawer()"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-[var(--bg)] z-[2001] translate-x-full transition-transform duration-500 border-l border-white/5 shadow-[-20px_0_60px_rgba(0,0,0,0.5)]">
+        <div id="cart-drawer-content" class="h-full">
+            <!-- Content loaded via AJAX -->
+        </div>
+    </div>
+
+    <style>
+        #cart-drawer.open { transform: translateX(0); }
+        #cart-drawer-overlay.open { opacity: 1; pointer-events: auto; }
+        
+        /* Custom scrollbar for drawer */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--divider); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+    </style>
+
+    <!-- ═══ GLOBAL JS ═════════════════════════════════════════════════════════════ -->
+    <script src="{{ STATIC_URL }}js/main.js?v=1.0.1"></script>
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Redundant functions removed (now in main.js)
+
+        // Cookies banner
+        if (!localStorage.getItem('cookies_accepted')) {
+            setTimeout(() => document.getElementById('cookie-banner').classList.remove('hidden'), 2000);
+        }
+        function acceptCookies() {
+            localStorage.setItem('cookies_accepted', 'true');
+            document.getElementById('cookie-banner').classList.add('hidden');
+        }
+        function declineCookies() {
+            document.getElementById('cookie-banner').classList.add('hidden');
+        }
+
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Connect – Vantura{% endblock %}
+
+{% block content %}
+<section class="relative pt-32 pb-24 overflow-hidden bg-[var(--bg)] min-h-screen">
+    <!-- Background Blobs -->
+    <div class="blob blob-mint w-[500px] h-[500px] -top-20 -right-20"></div>
+    <div class="blob blob-stone w-[400px] h-[400px] bottom-0 -left-20 opacity-30"></div>
+
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="max-w-3xl mb-24">
+            <div class="section-tag mb-6 inline-flex">💬 Support</div>
+            <h1 class="font-display text-6xl lg:text-8xl leading-[1.1] mb-12 text-[var(--h)] tracking-tight">
+                Let's <span class="italic font-light text-[var(--brand)]">Connect.</span>
+            </h1>
+            <p class="text-[var(--p)] text-xl leading-relaxed opacity-70">
+                Whether you have a question about an item or simply wish to discuss our collection, our team is here to assist. Expect a response within 24 hours.
+            </p>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-24 items-start">
+            <!-- Left: Contact Info -->
+            <div class="lg:col-span-4 space-y-12">
+                <div class="group">
+                    <div class="text-[10px] uppercase tracking-[0.3em] font-black text-[var(--brand)] mb-4">Email</div>
+                    <p class="text-2xl font-display text-[var(--h)]">support@vantura.com</p>
+                    <div class="w-0 h-[1px] bg-[var(--brand)] group-hover:w-full transition-all duration-500 mt-2"></div>
+                </div>
+
+                <div class="group">
+                    <div class="text-[10px] uppercase tracking-[0.3em] font-black text-[var(--brand)] mb-4">Availability</div>
+                    <div class="space-y-2 text-lg text-[var(--p)] opacity-80">
+                        <p>Monday — Friday / 09:00 - 18:00</p>
+                        <p>Saturday / 10:00 - 16:00</p>
+                    </div>
+                </div>
+
+                <div class="p-10 glass-card rounded-[2.5rem] bg-[var(--card-bg)] border-[var(--divider)]">
+                    <div class="text-3xl mb-6">🌿</div>
+                    <h3 class="font-display text-2xl mb-4">Global Reach</h3>
+                    <p class="text-[var(--p)] opacity-60 leading-relaxed">Based in London, shipping worldwide. Quality knows no borders.</p>
+                </div>
+            </div>
+
+            <!-- Right: Contact Form -->
+            <div class="lg:col-span-8">
+                <div class="glass-card p-12 rounded-[3rem] bg-[var(--card-bg)] border-[var(--divider)] shadow-2xl relative overflow-hidden">
+                    <!-- Subtle Form Background Blur -->
+                    <div class="absolute inset-0 bg-[var(--glass)] backdrop-blur-3xl -z-10"></div>
+                    
+                    <form method="post" class="space-y-10">
+                        {% csrf_token %}
+                        <div class="grid md:grid-cols-2 gap-10">
+                            <div class="space-y-4">
+                                <label class="text-[10px] uppercase tracking-widest font-bold text-[var(--brand)]">Your Name</label>
+                                <div class="relative">
+                                    {{ form.name }}
+                                    <div class="absolute bottom-0 left-0 h-[1px] bg-[var(--divider)] w-full"></div>
+                                </div>
+                                {% if form.name.errors %}<p class="text-red-400 text-xs">{{ form.name.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div class="space-y-4">
+                                <label class="text-[10px] uppercase tracking-widest font-bold text-[var(--brand)]">Email Address</label>
+                                <div class="relative">
+                                    {{ form.email }}
+                                    <div class="absolute bottom-0 left-0 h-[1px] bg-[var(--divider)] w-full"></div>
+                                </div>
+                                {% if form.email.errors %}<p class="text-red-400 text-xs">{{ form.email.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <label class="text-[10px] uppercase tracking-widest font-bold text-[var(--brand)]">Subject</label>
+                            <div class="relative">
+                                {{ form.subject }}
+                                <div class="absolute bottom-0 left-0 h-[1px] bg-[var(--divider)] w-full"></div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <label class="text-[10px] uppercase tracking-widest font-bold text-[var(--brand)]">Your Message</label>
+                            <div class="relative">
+                                {{ form.message }}
+                                <div class="absolute bottom-0 left-0 h-[1px] bg-[var(--divider)] w-full"></div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-[var(--h)] text-[var(--bg)] py-6 rounded-2xl font-bold text-lg hover:opacity-90 transition-all shadow-2xl flex items-center justify-center gap-3">
+                            Send Message <span class="text-xl">→</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Custom form styling for this page */
+input, textarea {
+    background: transparent !important;
+    border: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    font-size: 1.125rem !important;
+}
+input:focus, textarea:focus {
+    outline: none !important;
+}
+</style>
+
+{% endblock %}

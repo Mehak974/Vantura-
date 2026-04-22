@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}{{ category.name }} – Vantura{% endblock %}
+
+{% block content %}
+
+<!-- ═══ CATEGORY HERO ══════════════════════════════════════════════════════════ -->
+<section class="relative min-h-[60vh] flex items-center pt-32 pb-20 overflow-hidden bg-[var(--bg)]">
+    <!-- Background Blobs -->
+    <div class="blob blob-mint w-[500px] h-[500px] -top-20 -left-20"></div>
+    <div class="blob blob-stone w-[400px] h-[400px] bottom-0 right-0 opacity-40"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 w-full relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <!-- Left Side: Editorial Content -->
+            <div class="lg:col-span-7 animate-on-scroll">
+                <nav class="flex items-center gap-2 text-sm text-[var(--muted)] mb-8 uppercase tracking-[0.2em] font-semibold">
+                    <a href="{% url 'home' %}" class="hover:text-[var(--brand)]">Home</a>
+                    <span>/</span>
+                    <span class="text-[var(--brand)]">{{ category.name }}</span>
+                </nav>
+                
+                <h1 class="font-display text-6xl lg:text-8xl leading-[1.1] mb-8 text-[var(--h)] tracking-tight">
+                    The finest in <span class="italic font-light text-[var(--brand)]">{{ category.name }}</span>
+                </h1>
+                
+                {% if category.description %}
+                <p class="text-[var(--p)] text-lg lg:text-xl max-w-xl mb-10 leading-relaxed opacity-80">
+                    {{ category.description }}
+                </p>
+                {% endif %}
+
+                <div class="flex items-center gap-6">
+                    <div class="flex flex-col">
+                        <span class="text-xs uppercase tracking-widest opacity-50 mb-1">Items</span>
+                        <span class="font-display font-medium text-lg">{{ total_count }} Items</span>
+                    </div>
+                    <div class="w-12 h-[1px] bg-[var(--divider)]"></div>
+                    <div class="flex flex-col">
+                        <span class="text-xs uppercase tracking-widest opacity-50 mb-1">Status</span>
+                        <span class="font-display font-medium text-lg text-green-600">Fresh Stock</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Category Imagery -->
+            <div class="hidden lg:block lg:col-span-5 relative animate-on-scroll">
+                <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl aspect-[4/5]">
+                    {% with slug=category.slug %}
+                    <img src="/media/cat_{% if slug == 'health-supplements' %}health{% elif slug == 'pet-care' %}pets{% elif slug == 'home-outdoor' %}home{% elif slug == 'beauty-personal-care' %}beauty{% elif slug == 'tools' %}tools{% elif slug == 'toys' %}toys{% else %}{{ slug }}{% endif %}.png" 
+                         alt="{{ category.name }}" class="w-full h-full object-cover">
+                    {% endwith %}
+                </div>
+                <!-- Decorative Frame -->
+                <div class="absolute -inset-4 border border-[var(--brand)]/20 rounded-2xl -rotate-1 z-0"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══ PRODUCTS GRID ═════════════════════════════════════════════════════════ -->
+<section class="py-20 px-4 bg-[var(--bg)] min-h-screen">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Filter Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 animate-on-scroll">
+            <div>
+                <div class="section-tag mb-4">🌿 Selected Items</div>
+                <h2 class="font-display font-medium text-4xl">Browse the <span class="italic">Collection</span></h2>
+            </div>
+
+            {% if category.subcategories.exists %}
+            <div class="flex flex-wrap gap-3">
+                <a href="{% url 'category' category.slug %}" class="subcat-link px-6 py-2.5 rounded-full text-sm font-semibold transition-all {% if not current_subcategory %}bg-[var(--h)] text-[var(--bg)]{% else %}bg-[var(--card-hover)] text-[var(--p)] hover:bg-[var(--divider)]{% endif %}">
+                    All
+                </a>
+                {% for sub in category.subcategories.all %}
+                <a href="{% url 'category' category.slug %}?subcategory={{ sub.slug }}"
+                   class="subcat-link px-6 py-2.5 rounded-full text-sm font-semibold transition-all {% if current_subcategory.slug == sub.slug %}bg-[var(--h)] text-[var(--bg)]{% else %}bg-[var(--card-hover)] text-[var(--p)] hover:bg-[var(--divider)]{% endif %}">
+                    {{ sub.name }}
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div id="product-container">
+            {% include 'store/includes/product_grid.html' %}
+        </div>
+        
+    </div>
+</section>
+
+{% endblock %}
