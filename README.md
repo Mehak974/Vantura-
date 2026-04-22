@@ -1,8 +1,8 @@
 # 🛍️ Vantura — Peak Lifestyle Curations
 
-A modern, secure, full-stack e-commerce platform built with **Django** + **Tailwind CSS** + **Three.js**.
+A modern, secure, full-stack e-commerce platform built with **Django** + **Tailwind CSS** + **Vanilla JS**.
 
-![Vantura](https://img.shields.io/badge/Django-4.2-green) ![Tailwind](https://img.shields.io/badge/Tailwind-CDN-blue) ![Three.js](https://img.shields.io/badge/Three.js-r128-orange) ![Security](https://img.shields.io/badge/Security-Hardened-red)
+![Vantura](https://img.shields.io/badge/Django-4.2-green) ![Tailwind](https://img.shields.io/badge/Tailwind-CDN-blue) ![JS](https://img.shields.io/badge/Vanilla_JS-ES6-orange) ![Security](https://img.shields.io/badge/Security-Hardened-red)
 
 ---
 
@@ -168,7 +168,7 @@ Vantura/
 |---|---|
 | **Backend** | Django 4.2 |
 | **Frontend CSS** | Tailwind CSS (CDN) |
-| **3D Graphics** | Three.js r128 |
+| **3D Graphics** | CSS Blobs + Parallax JS |
 | **Fonts** | Syne (display) + DM Sans (body) via Google Fonts |
 | **Database** | SQLite (dev) → PostgreSQL recommended for production |
 | **Image Storage** | Local media/ (dev) → S3/Cloudinary for production |
