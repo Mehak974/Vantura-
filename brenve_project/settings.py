@@ -70,12 +70,16 @@ WSGI_APPLICATION = 'brenve_project.wsgi.application'
 if os.environ.get('ENV') == 'production':
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
+            'ENGINE': 'django.db.backends.mysql',
             'NAME': os.environ.get('DB_NAME', 'disilvki_brenve_db'),
             'USER': os.environ.get('DB_USER', 'disilvki_brenve_user'),
             'PASSWORD': os.environ.get('DB_PASSWORD', 'Brenve2026#@!321'),
             'HOST': os.environ.get('DB_HOST', 'localhost'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
+            'PORT': os.environ.get('DB_PORT', '3306'),
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                'charset': 'utf8mb4',
+            }
         }
     }
 else:
