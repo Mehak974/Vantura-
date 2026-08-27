@@ -6,6 +6,10 @@ Production-ready configuration with security hardening.
 import os
 from pathlib import Path
 
+# Use PyMySQL as MySQLdb for compatibility without needing C extensions
+import pymysql
+pymysql.install_as_MySQLdb()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY - Change this in production!
