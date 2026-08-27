@@ -10,6 +10,13 @@ from pathlib import Path
 import pymysql
 pymysql.install_as_MySQLdb()
 
+# Load environment variables from .env if present
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY - Change this in production!
