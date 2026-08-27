@@ -57,10 +57,12 @@ def get_or_create_cart(request):
 def home(request):
     featured_products = Product.objects.filter(is_active=True, is_featured=True).select_related('category')[:8]
     new_arrivals = Product.objects.filter(is_active=True, is_new=True).select_related('category')[:8]
+    popular_products = Product.objects.filter(is_active=True).order_by('-stock')[:8]
     categories = Category.objects.filter(is_active=True)
     return render(request, 'store/home.html', {
         'featured_products': featured_products,
         'new_arrivals': new_arrivals,
+        'popular_products': popular_products,
         'categories': categories,
     })
 

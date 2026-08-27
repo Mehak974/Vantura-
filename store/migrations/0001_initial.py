@@ -1,4 +1,4 @@
-# Generated migration for Vantura Store
+# Generated migration for Brenve Store
 
 from django.conf import settings
 from django.db import migrations, models

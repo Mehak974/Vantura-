@@ -1,8 +1,8 @@
-# 🛍️ Vantura — Peak Lifestyle Curations
+# 🛍️ Brenve — Peak Lifestyle Curations
 
 A modern, secure, full-stack e-commerce platform built with **Django** + **Tailwind CSS** + **Vanilla JS**.
 
-![Vantura](https://img.shields.io/badge/Django-4.2-green) ![Tailwind](https://img.shields.io/badge/Tailwind-CDN-blue) ![JS](https://img.shields.io/badge/Vanilla_JS-ES6-orange) ![Security](https://img.shields.io/badge/Security-Hardened-red)
+![Brenve](https://img.shields.io/badge/Django-4.2-green) ![Tailwind](https://img.shields.io/badge/Tailwind-CDN-blue) ![JS](https://img.shields.io/badge/Vanilla_JS-ES6-orange) ![Security](https://img.shields.io/badge/Security-Hardened-red)
 
 ---
 
@@ -11,7 +11,7 @@ A modern, secure, full-stack e-commerce platform built with **Django** + **Tailw
 ### 1. Clone / Extract
 
 ```bash
-cd Vantura/
+cd Brenve/
 ```
 
 ### 2. Create a virtual environment
@@ -69,12 +69,12 @@ Open your browser:
 ## 📁 Project Structure
 
 ```
-Vantura/
+Brenve/
 ├── manage.py
 ├── requirements.txt
 ├── README.md
 │
-├── vantura_project/          # Django project config
+├── brenve_project/          # Django project config
 │   ├── settings.py           # All settings (security hardened)
 │   ├── urls.py               # Root URL config
 │   └── wsgi.py
@@ -252,7 +252,7 @@ DATABASES = {
 
 ```bash
 pip install gunicorn
-gunicorn vantura_project.wsgi:application --workers 3 --bind 0.0.0.0:8000
+gunicorn brenve_project.wsgi:application --workers 3 --bind 0.0.0.0:8000
 ```
 
 ### 5. SSL/HTTPS
@@ -288,7 +288,7 @@ To enable credit card payments:
 ## 🔧 Customization
 
 ### Change store name
-Edit `base.html` — search for `VANTURA`
+Edit `base.html` — search for `BRENVE`
 
 ### Add a new category
 ```bash
@@ -309,7 +309,7 @@ tailwind.config = {
 
 ## 📄 License
 
-© 2026 Vantura. All rights reserved.
+© 2026 Brenve. All rights reserved.
 
 ---
 

@@ -32,7 +32,7 @@ def register(request):
                 if guest_cart:
                     guest_cart.merge_with_user(user)
 
-            messages.success(request, f'Welcome to Vantura, {user.first_name}!')
+            messages.success(request, f'Welcome to Brenve, {user.first_name}!')
             return redirect('home')
     else:
         form = RegisterForm()

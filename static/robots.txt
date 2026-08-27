@@ -1,4 +1,4 @@
-# Vantura Robots.txt
+# Brenve Robots.txt
 User-agent: *
 Allow: /
 Disallow: /admin/

@@ -1,5 +1,5 @@
 """
-Vantura URL Configuration
+Brenve URL Configuration
 """
 from django.contrib import admin
 from django.urls import path, include
@@ -8,8 +8,8 @@ from django.conf.urls.static import static
 from django.http import HttpResponse
 
 # Customize admin site
-admin.site.site_header = 'Vantura Admin Panel'
-admin.site.site_title = 'Vantura'
+admin.site.site_header = 'Brenve Admin Panel'
+admin.site.site_title = 'Brenve'
 admin.site.index_title = 'Store Management'
 
 urlpatterns = [

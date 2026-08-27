@@ -1,5 +1,5 @@
 """
-Vantura Admin Panel Configuration
+Brenve Admin Panel Configuration
 Full CRUD for products, categories, orders, reviews, and messages.
 """
 from django.contrib import admin

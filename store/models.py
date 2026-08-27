@@ -1,5 +1,5 @@
 """
-Store Models for Vantura E-commerce
+Store Models for Brenve E-commerce
 Includes: Category, SubCategory, Product, Cart, CartItem, Order, OrderItem, Review
 """
 from django.db import models

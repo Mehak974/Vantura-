@@ -1,6 +1,6 @@
 """
 Management command: python manage.py seed_data
-Seeds all categories, subcategories, and sample products for Vantura.
+Seeds all categories, subcategories, and sample products for Brenve.
 """
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
@@ -252,7 +252,7 @@ SAMPLE_PRODUCTS = [
 
 
 class Command(BaseCommand):
-    help = 'Seed Vantura database with categories, subcategories, and sample products'
+    help = 'Seed Brenve database with categories, subcategories, and sample products'
 
     def add_arguments(self, parser):
         parser.add_argument('--flush', action='store_true', help='Delete existing data before seeding')
@@ -265,7 +265,7 @@ class Command(BaseCommand):
             SubCategory.objects.all().delete()
             Category.objects.all().delete()
 
-        self.stdout.write(self.style.MIGRATE_HEADING('\n--- Seeding Vantura database ---\n'))
+        self.stdout.write(self.style.MIGRATE_HEADING('\n--- Seeding Brenve database ---\n'))
 
         # Create categories and subcategories
         cat_map = {}
@@ -327,12 +327,12 @@ class Command(BaseCommand):
         # Create admin user
         if options['admin']:
             if not User.objects.filter(username='admin').exists():
-                User.objects.create_superuser('admin', 'admin@vantura.com', 'admin123')
+                User.objects.create_superuser('admin', 'admin@brenve.com', 'admin123')
                 self.stdout.write(self.style.SUCCESS('  ADMIN created: admin / admin123'))
             else:
                 self.stdout.write('  Admin user already exists')
 
-        self.stdout.write(self.style.SUCCESS('\n--- Seeding complete! Vantura is ready ---\n'))
+        self.stdout.write(self.style.SUCCESS('\n--- Seeding complete! Brenve is ready ---\n'))
         self.stdout.write('  Run: python manage.py runserver')
         self.stdout.write('  Admin: http://localhost:8000/admin/')
         self.stdout.write('  Store: http://localhost:8000/\n')

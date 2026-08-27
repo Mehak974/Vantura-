@@ -1,5 +1,5 @@
 """
-Vantura E-commerce - Django Settings
+Brenve E-commerce - Django Settings
 Production-ready configuration with security hardening.
 """
 
@@ -43,7 +43,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Clickjacking protection
 ]
 
-ROOT_URLCONF = 'vantura_project.urls'
+ROOT_URLCONF = 'brenve_project.urls'
 
 TEMPLATES = [
     {
@@ -64,15 +64,27 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'vantura_project.wsgi.application'
+WSGI_APPLICATION = 'brenve_project.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.environ.get('ENV') == 'production':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME', 'disilvki_brenve_db'),
+            'USER': os.environ.get('DB_USER', 'disilvki_brenve_user'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', 'Brenve2026#@!321'),
+            'HOST': os.environ.get('DB_HOST', 'localhost'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation (strong requirements)
 AUTH_PASSWORD_VALIDATORS = [

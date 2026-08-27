@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}{{ product.name }} – Vantura{% endblock %}
+{% block title %}{{ product.name }} – Brenve{% endblock %}
 {% block meta_description %}{{ product.short_description|default:product.description|truncatechars:160 }}{% endblock %}
 
 {% block content %}
@@ -30,7 +30,7 @@
                     <div class="relative z-10 glass-card rounded-3xl overflow-hidden shadow-2xl bg-white/40 backdrop-blur-md">
                         <img src="{{ product.get_image_url }}" alt="{{ product.name }}" id="main-image"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                             class="w-full aspect-square object-cover transition-transform duration-1000 group-hover:scale-105">
+                             class="w-full aspect-square object-contain transition-transform duration-1000 group-hover:scale-105">
                         
                         <div class="w-full aspect-square premium-placeholder hidden"></div>
                     </div>
@@ -64,7 +64,7 @@
                     {% if product.is_new %}<span class="badge badge-new">New Arrival</span>{% endif %}
                     {% if product.discount_percentage %}<span class="badge badge-sale">{{ product.discount_percentage }}% Off</span>{% endif %}
                     {% if product.is_founder_choice %}<span class="badge bg-brand-500 text-[#1d231f] border-0">✨ Julian's Choice</span>{% endif %}
-                    {% if product.is_featured %}<span class="badge" style="background:var(--brand); color:#1d231f;">Vantura Featured</span>{% endif %}
+                    {% if product.is_featured %}<span class="badge" style="background:var(--brand); color:#1d231f;">Brenve Featured</span>{% endif %}
                 </div>
 
                 <h1 class="font-display text-4xl lg:text-6xl leading-[1.1] mb-6 text-[var(--h)] tracking-tight">{{ product.name }}</h1>
@@ -193,10 +193,10 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {% for prod in related_products %}
                 <div class="product-card">
-                    <div class="img-wrap relative aspect-square overflow-hidden bg-[var(--card-hover)]">
+                    <div class="img-wrap relative w-full h-[250px] overflow-hidden bg-[var(--card-hover)] flex items-center justify-center">
                         <img src="{{ prod.get_image_url }}" alt="{{ prod.name }}" 
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                             class="max-w-[200px] max-h-[250px] object-contain transition-transform duration-700 group-hover:scale-110">
                         <div class="w-full h-full premium-placeholder hidden"></div>
                     </div>
                     <div class="p-6">

@@ -1,11 +1,11 @@
 {% if products %}
-<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 gsap-stagger-container">
     {% for product in products %}
-    <div class="product-card animate-on-scroll" data-delay="{% cycle '0' '100' '200' '300' %}">
-        <div class="img-wrap relative aspect-square overflow-hidden bg-[var(--card-hover)]">
+    <div class="product-card animate-on-scroll gsap-stagger-item" data-delay="{% cycle '0' '100' '200' '300' %}">
+        <div class="img-wrap relative w-full h-[250px] overflow-hidden bg-[var(--card-hover)] flex items-center justify-center">
             <img src="{{ product.get_image_url }}" alt="{{ product.name }}" 
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                 class="max-w-[200px] max-h-[250px] object-contain transition-transform duration-700 group-hover:scale-110">
             <div class="w-full h-full premium-placeholder hidden"></div>
 
             <div class="absolute top-4 left-4 flex flex-col gap-2">

@@ -1,5 +1,5 @@
 /**
- * Vantura E-commerce – Main JavaScript
+ * Brenve E-commerce – Main JavaScript
  * Single file for all frontend logic:
  * - Cart (AJAX add/update/remove)
  * - Toast notifications
@@ -471,9 +471,9 @@ function initLazyImages() {
 
 // ─── CSS Spin Keyframe (for loading states) ────────────────────────────────────
 (function addSpinStyle() {
-    if (document.getElementById('vantura-spin-style')) return;
+    if (document.getElementById('brenve-spin-style')) return;
     const style = document.createElement('style');
-    style.id = 'vantura-spin-style';
+    style.id = 'brenve-spin-style';
     style.textContent = `
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .animate-float { animation: float 6s ease-in-out infinite; }
@@ -557,10 +557,10 @@ function toggleTheme() {
     const isDark = !document.documentElement.classList.contains('light-mode');
     if (isDark) {
         document.documentElement.classList.add('light-mode');
-        localStorage.setItem('vantura-theme', 'light');
+        localStorage.setItem('brenve-theme', 'light');
     } else {
         document.documentElement.classList.remove('light-mode');
-        localStorage.setItem('vantura-theme', 'dark');
+        localStorage.setItem('brenve-theme', 'dark');
     }
     updateThemeUI();
 }
@@ -577,7 +577,7 @@ function updateThemeUI() {
 }
 
 function initTheme() {
-    const saved = localStorage.getItem('vantura-theme');
+    const saved = localStorage.getItem('brenve-theme');
     if (saved === 'light') {
         document.documentElement.classList.add('light-mode');
     } else {
