@@ -327,8 +327,8 @@ class Command(BaseCommand):
         # Create admin user
         if options['admin']:
             if not User.objects.filter(username='admin').exists():
-                User.objects.create_superuser('admin', 'admin@brenve.com', 'admin123')
-                self.stdout.write(self.style.SUCCESS('  ADMIN created: admin / admin123'))
+                User.objects.create_superuser('admin', 'admin@brenve.com', 'Brenve2026#@!')
+                self.stdout.write(self.style.SUCCESS('  ADMIN created: admin / Brenve2026#@!'))
             else:
                 self.stdout.write('  Admin user already exists')
 
